@@ -1,21 +1,23 @@
-class UserNotFoundError(Exception) :
-    def __init__(self , username):
-        self.username = username
-
-class UserDatabase:
-    def __init__(self):
-       self.dict_user = {
-           'nomer_1' : {'name' : 'Zahar' , 'age' : 15} ,
-           'nomer_2' : {'name' : 'Anastasia' , 'age' : 17}
-       }
-    def get_user(self , user_name):
-       if user_name in self.dict_user:
-           return self.dict_user[user_name]
-       else:
-           raise UserNotFoundError(user_name)
-finish = UserDatabase()
+class ValueError(Exception):
+    def __init__(self , temperatura):
+        self.temperatura = temperatura
+class TemperatureConverte:
+    def celsius_to_fahrenheit(self , celsius):
+        if celsius < -273:
+            raise ValueError(celsius)
+        return celsius * 9/5 + 32
+    def fahrenheit_to_celsius(self ,fahrenheit):
+        if fahrenheit < -460:
+            raise ValueError(fahrenheit)
+        return (fahrenheit - 32) * 9/5
+rezult = TemperatureConverte()
 try:
-    user_1 = finish.get_user("nomer_1")
-    print(f"{user_1} знайдено в базі")
-except UserNotFoundError as a :
-    print(f"{a.username} не був знайдений")
+    temperature_1 = rezult.celsius_to_fahrenheit(55)
+    print(f"Температура -> {temperature_1} в фарангейтах")
+except ValueError as b:
+    print(f"{b.temperatura} слишком низька температура")
+try:
+    temperature_2 = rezult.fahrenheit_to_celsius(30)
+    print(f"Температура -> {temperature_2} в цельціях")
+except ValueError as a :
+    print(f"{a.temperatura} слишком низька температура")
