@@ -1,21 +1,21 @@
-import requests
-class InvalidUrlError(Exception):
-    def __init__(self, url):
-        self.url = url
-        super().__init__('Invalid URL: {}'.format(url))
+class UserNotFoundError(Exception) :
+    def __init__(self , username):
+        self.username = username
 
-def fetch_data_from_url(url):
-    try:
-        response = requests.get(url)
-        if response.status_code != 200:
-            raise InvalidUrlError(url)
-        else:
-            print('Вірний URL:', url)
-    except requests.exceptions.RequestException:
-        raise InvalidUrlError(url)
-
+class UserDatabase:
+    def __init__(self):
+       self.dict_user = {
+           'nomer_1' : {'name' : 'Zahar' , 'age' : 15} ,
+           'nomer_2' : {'name' : 'Anastasia' , 'age' : 17}
+       }
+    def get_user(self , user_name):
+       if user_name in self.dict_user:
+           return self.dict_user[user_name]
+       else:
+           raise UserNotFoundError(user_name)
+finish = UserDatabase()
 try:
-    url = input('Введить URL: ')
-    fetch_data_from_url(url)
-except InvalidUrlError as a:
-    print(a)
+    user_1 = finish.get_user("nomer_1")
+    print(f"{user_1} знайдено в базі")
+except UserNotFoundError as a :
+    print(f"{a.username} не був знайдений")
