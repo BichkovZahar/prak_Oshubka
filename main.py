@@ -1,16 +1,21 @@
-# This is a sample Python script.
+import requests
+class InvalidUrlError(Exception):
+    def __init__(self, url):
+        self.url = url
+        super().__init__('Invalid URL: {}'.format(url))
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+def fetch_data_from_url(url):
+    try:
+        response = requests.get(url)
+        if response.status_code != 200:
+            raise InvalidUrlError(url)
+        else:
+            print('Вірний URL:', url)
+    except requests.exceptions.RequestException:
+        raise InvalidUrlError(url)
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+try:
+    url = input('Введить URL: ')
+    fetch_data_from_url(url)
+except InvalidUrlError as a:
+    print(a)
